@@ -3,6 +3,7 @@ package main
 import (
 	"image/color"
 	"log"
+	"sync"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -18,6 +19,7 @@ var (
 	green   = color.RGBA{R: 10, G: 255, B: 50, A: 255}
 	boids   [boidCount]*Boid
 	boidMap [screenWidth + 1][screenHeight + 1]int //two dimensional array to store all the cordinates on the screen
+	rwLock  = sync.RWMutex{}
 )
 
 type Game struct {
@@ -47,6 +49,7 @@ func main() {
 			boidMap[i][j] = -1
 		}
 	}
+	//create the boids
 	for i := 0; i < boidCount; i++ {
 		createBoid(i)
 	}
